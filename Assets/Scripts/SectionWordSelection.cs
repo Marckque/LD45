@@ -1,5 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using UnityEngine.Events;
+using System;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -17,6 +19,7 @@ public class SectionWordSelection : CustomUpdateUser
 
     [Header("Validate Button")]
     public GameObject validateButton;
+    public SectionSpeech speech;
 
     [Header("Words")]
     public string[] allWords;
@@ -26,15 +29,28 @@ public class SectionWordSelection : CustomUpdateUser
     public Color unselectedColor;
 
     private Text[] allTexts;
-    public List<string> selectedWords;
-
     private Button[] allButtons;
-    public List<Button> selectedWordButtons;
+
+    private List<int> selectedWordsIndexes = new List<int>();
 
     private void Start()
     {
         OnWordSelectionStarting();
         InitialiseVariables();
+
+        // Make it so that the validate button does more things
+        action += ActivateSpeech;
+
+        // Activates the speech
+        validateButton.GetComponent<Button>().onClick.AddListener(action);
+    }
+
+    UnityAction action;
+
+    private void ActivateSpeech()
+    {
+        gameObject.SetActive(false);
+        speech.OnSpeechSectionStarting(selectedWordsIndexes.ToArray());
     }
 
     private void InitialiseVariables()
@@ -71,59 +87,37 @@ public class SectionWordSelection : CustomUpdateUser
         wordSelectionUI.alpha = 0f;
     }
 
-    public void UpdateWordList(Text textComponent)
+    public void UpdateWordList(int index)
     {
-        string t = textComponent.text;
-
         // Add / remove a word
-        if (selectedWords.Contains(t))
+        if (selectedWordsIndexes.Contains(index))
         {
-            RemoveWord(t);
+            RemoveWord(index);
         }
         else
         {
-            AddWord(t);
+            AddWord(index);
         }
 
         // Update UI
-        validateButton.gameObject.SetActive(selectedWordButtons.Count >= amountOfWordsToPick);
+        validateButton.gameObject.SetActive(selectedWordsIndexes.Count >= amountOfWordsToPick);
     }
 
-    private void AddWord(string word)
+    private void AddWord(int index)
     {
-        if (selectedWordButtons.Count >= amountOfWordsToPick)
+        if (selectedWordsIndexes.Count >= amountOfWordsToPick)
         {
             return;
         }
 
-        foreach (Button b in allButtons)
-        {
-            if (b.GetComponentInChildren<Text>().text == word)
-            {
-                selectedWordButtons.Add(b);
-            }
-        }
-
-        foreach (Button b in selectedWordButtons)
-        {
-            b.image.color = selectedColor;
-        }
-
-        selectedWords.Add(word);
+        selectedWordsIndexes.Add(index);
+        allButtons[index].image.color = selectedColor;
     }
 
-    private void RemoveWord(string word)
+    private void RemoveWord(int index)
     {
-        selectedWords.Remove(word);
-
-        foreach (Button b in allButtons)
-        {
-            if (b.GetComponentInChildren<Text>().text == word)
-            {
-                selectedWordButtons.Remove(b);
-                b.image.color = unselectedColor;
-            }
-        }
+        allButtons[index].image.color = unselectedColor;
+        selectedWordsIndexes.Remove(index);
     }
 
     public override void CustomUpdate()

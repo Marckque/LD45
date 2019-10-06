@@ -24,12 +24,20 @@ public class SectionSpeech : CustomUpdateUser
     [Header("Possibles Speeches")]
     public Text[] speechesText;
 
+    [Header("Score Related")]
+    public PopularityScore popularityScore;
+    public int[] speechesIndexes;
+    public int[] validSpeeches;
+    public int[] wrongSpeeches;
+
     private int currentSlideIndex;
 
     public UnityAction OnSpeechEnded;
 
     public void OnSpeechSectionStarting(int[] indexes)
     {
+        speechesIndexes = indexes;
+
         speechesText[0].text = allSpeeches[indexes[0]];
 
         speechesText[1].text = allSpeeches[indexes[1]];
@@ -76,6 +84,8 @@ public class SectionSpeech : CustomUpdateUser
         int previousIndex = currentSlideIndex;
         currentSlideIndex = Mathf.Clamp(currentSlideIndex + 1, 0, speechesText.Length);
 
+        CalculateScore();
+
         if (currentSlideIndex >= speechesText.Length)
         {
             EndSpeech();
@@ -84,6 +94,56 @@ public class SectionSpeech : CustomUpdateUser
 
         speechesCanvas[previousIndex].gameObject.SetActive(false);
         speechesCanvas[currentSlideIndex].gameObject.SetActive(true);
+    }
+
+    public void CalculateScore()
+    {
+        // Loop through all good/wrong speeches
+        for (int i = 0; i < speechesIndexes.Length; i++)
+        {
+            for (int j = 0; j < validSpeeches.Length; j++)
+            {
+                // In case valid
+                if (speechesIndexes[i] == validSpeeches[j])
+                {
+                    popularityScore.HighPopularityIncrement();
+                    return;
+                }
+                
+                // In case INvalid
+                if (speechesIndexes[i] == wrongSpeeches[j])
+                {
+                    popularityScore.HighPopularityDecrement();
+                    return;
+                }
+            }
+        }
+
+        // Else random choice because no time ; not by design.
+        float mediumOrLow = Random.Range(0f, 1f);
+        float moreOrLess = Random.Range(0f, 1f);
+        if (mediumOrLow > 0.5f)
+        {
+            if (moreOrLess > 0.5f)
+            {
+                popularityScore.MediumPopularityIncrement();
+            }
+            else
+            {
+                popularityScore.MediumPopularityDecrement();
+            }
+        }
+        else
+        {
+            if (moreOrLess > 0.5f)
+            {
+                popularityScore.LowPopularityIncrement();
+            }
+            else
+            {
+                popularityScore.LowPopularityDecrement();
+            }
+        }
     }
 
     public void ToggleSectionSpeechTo(bool value)

@@ -114,8 +114,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: -208}
-  m_SizeDelta: {x: -100, y: -516}
+  m_AnchoredPosition: {x: 0, y: -180}
+  m_SizeDelta: {x: 0, y: -440}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &7987510599234611784
 CanvasRenderer:
@@ -188,8 +188,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: -208}
-  m_SizeDelta: {x: -100, y: -516}
+  m_AnchoredPosition: {x: 0, y: -180}
+  m_SizeDelta: {x: 0, y: -440}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &7987510599303623458
 CanvasRenderer:
@@ -262,8 +262,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: -208}
-  m_SizeDelta: {x: -100, y: -516}
+  m_AnchoredPosition: {x: 0, y: -180}
+  m_SizeDelta: {x: 0, y: -440}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &7987510599570075486
 CanvasRenderer:
@@ -480,7 +480,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: "(001) Je suis un dialogue g\xE9n\xE9rique, et je suis un dialogue g\xE9n\xE9rique
+  m_Text: "(002) Je suis un dialogue g\xE9n\xE9rique, et je suis un dialogue g\xE9n\xE9rique
     ; une jambe dans un pi\xE8ge \xE0 loup, pince la jambe. Euph\xE9misme."
 --- !u!1 &7987510600223643239
 GameObject:
@@ -560,7 +560,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: "(001) Je suis un dialogue g\xE9n\xE9rique, et je suis un dialogue g\xE9n\xE9rique
+  m_Text: "(003) Je suis un dialogue g\xE9n\xE9rique, et je suis un dialogue g\xE9n\xE9rique
     ; une jambe dans un pi\xE8ge \xE0 loup, pince la jambe. Euph\xE9misme."
 --- !u!1 &7987510600238692531
 GameObject:
@@ -580,7 +580,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &7987510600238692530
 RectTransform:
   m_ObjectHideFlags: 0
@@ -678,7 +678,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &7987510600983707044
 Transform:
   m_ObjectHideFlags: 0
@@ -708,10 +708,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 44664b12aa484cc4aafbcdfbca54b8bf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speechesText:
-  - {fileID: 7987510599228096014}
-  - {fileID: 7987510600145974307}
-  - {fileID: 7987510600223643237}
+  isOpponentSpeech: 0
+  opponentSpeech: {fileID: 0}
+  slideDuration: 2
+  cinematic: {fileID: 0}
+  speechesCanvas:
+  - {fileID: 7987510599611806453}
+  - {fileID: 7987510601180031593}
+  - {fileID: 7987510600238692543}
   allSpeeches:
   - JOE fjaieo fezioa fjze iofjazfo zaejf oazjefoijaez ifoa
   - MONTANA iszai eazjfio jzefio jezaofijez aopizjgoizaejg zpeg
@@ -721,6 +725,10 @@ MonoBehaviour:
   - GOOD feazfjeuziafji ozejfioez jfoiazje fioajze fioaz
   - 'QUARTERBACK fjazei fjieozf jaozief jizaopefjze fijze '
   - . fazef azefzea f ezaf eaz fazef azefzeaazfafaezfazefaze
+  speechesText:
+  - {fileID: 7987510599228096014}
+  - {fileID: 7987510600145974307}
+  - {fileID: 7987510600223643237}
 --- !u!1 &7987510601180031597
 GameObject:
   m_ObjectHideFlags: 0
@@ -739,7 +747,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &7987510601180031596
 RectTransform:
   m_ObjectHideFlags: 0

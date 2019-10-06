@@ -7,8 +7,6 @@ using UnityEngine.UI;
 
 public class SectionWordSelection : CustomUpdateUser
 {
-    public bool debug; // to remove
-
     public Transform root;
 
     [Range(1, 4)]
@@ -33,24 +31,11 @@ public class SectionWordSelection : CustomUpdateUser
 
     private List<int> selectedWordsIndexes = new List<int>();
 
+    public UnityAction OnWordSelectionEnded;
+
     private void Start()
     {
-        OnWordSelectionStarting();
         InitialiseVariables();
-
-        // Make it so that the validate button does more things
-        action += ActivateSpeech;
-
-        // Activates the speech
-        validateButton.GetComponent<Button>().onClick.AddListener(action);
-    }
-
-    UnityAction action;
-
-    private void ActivateSpeech()
-    {
-        gameObject.SetActive(false);
-        speech.OnSpeechSectionStarting(selectedWordsIndexes.ToArray());
     }
 
     private void InitialiseVariables()
@@ -69,22 +54,24 @@ public class SectionWordSelection : CustomUpdateUser
         }
     }
 
-    public void Update() // to remove
+    private void ActivateSpeech()
     {
-        if (debug)
-        {
-            CustomUpdate();
-        }
+        
     }
 
     public void OnWordSelectionStarting()
     {
-        wordSelectionUI.alpha = 1f;
+        
     }
 
     public void OnWordSelectionEnding()
     {
-        wordSelectionUI.alpha = 0f;
+        // Activate Speech
+        speech.OnSpeechSectionStarting(selectedWordsIndexes.ToArray());
+        speech.ToggleSectionSpeechTo(true);
+
+        // Deactivate Word Selection
+        gameObject.SetActive(false);
     }
 
     public void UpdateWordList(int index)
@@ -123,5 +110,10 @@ public class SectionWordSelection : CustomUpdateUser
     public override void CustomUpdate()
     {
         
+    }
+
+    public void OnDestroy()
+    {
+        OnWordSelectionEnded -= ActivateSpeech;
     }
 }

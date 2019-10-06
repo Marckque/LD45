@@ -19,15 +19,19 @@ public class OrchestratorFlow : MonoBehaviour
     public bool debug = true;
 
     [Header("States")]
-    public FlowState currentState;
+    public FlowState defaultState;
+    private FlowState currentState;
 
     public SectionCinematic cinematic;
+    public SectionSituation situation;
     public SectionWordSelection wordSelection;
     public SectionSpeech speech;
     public SectionSpeech opponentSpeech;
 
     protected void Start()
     {
+        currentState = defaultState;
+
         // Start intro cinematic
         if (!debug)
         {
@@ -39,6 +43,7 @@ public class OrchestratorFlow : MonoBehaviour
         }
 
         // On word selection ending, make it so that we switch to switch
+        situation.OnSituationEnded += SetCurrentStateToWordSelection;
         wordSelection.OnWordSelectionEnded += SetCurrentStateToSpeech;
         speech.OnSpeechEnded += SetCurrentStateToOpponentSpeech;
         opponentSpeech.OnSpeechEnded += SetCurrentStateToCinematic;
@@ -48,6 +53,10 @@ public class OrchestratorFlow : MonoBehaviour
     {
         switch (currentState)
         {
+            case FlowState.Situation:
+                situation.CustomUpdate();
+                break;
+
             case FlowState.WordSelection:
                 wordSelection.CustomUpdate();
                 break;
@@ -65,19 +74,24 @@ public class OrchestratorFlow : MonoBehaviour
         }
     }
 
-    public void SetCurrentStateTo(FlowState newState)
-    {
-        currentState = newState;
-    }
-
     public void SetCurrentStateToCinematic()
     {
         currentState = FlowState.Cinematic;
     }
 
+    public void SetCurrentStateToSituation()
+    {
+        currentState = FlowState.Situation;
+
+        situation.gameObject.SetActive(true);
+        situation.Initialise();
+    }
+
     public void SetCurrentStateToWordSelection()
     {
         currentState = FlowState.WordSelection;
+
+        wordSelection.gameObject.SetActive(true);
     }
 
     public void SetCurrentStateToSpeech()
@@ -92,6 +106,7 @@ public class OrchestratorFlow : MonoBehaviour
 
     private void OnDestroy()
     {
+        situation.OnSituationEnded -= SetCurrentStateToWordSelection;
         wordSelection.OnWordSelectionEnded -= SetCurrentStateToSpeech;
         speech.OnSpeechEnded -= SetCurrentStateToOpponentSpeech;
         opponentSpeech.OnSpeechEnded -= SetCurrentStateToCinematic;

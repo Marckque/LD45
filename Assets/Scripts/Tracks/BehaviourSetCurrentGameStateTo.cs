@@ -19,6 +19,27 @@ public class BehaviourSetCurrentGameStateTo : PlayableBehaviour
         if (orchestrator == null)
             return;
 
-        orchestrator.SetCurrentStateTo(newFlowState);
+        switch (newFlowState)
+        {
+            case FlowState.Cinematic:
+                orchestrator.SetCurrentStateToCinematic();
+                break;
+
+            case FlowState.Situation:
+                orchestrator.SetCurrentStateToSituation();
+                break;
+
+            case FlowState.WordSelection:
+                orchestrator.SetCurrentStateToWordSelection();
+                break;
+
+            case FlowState.Speech:
+                orchestrator.SetCurrentStateToSpeech();
+                break;
+
+            case FlowState.OpponentSpeech:
+                orchestrator.SetCurrentStateToOpponentSpeech();
+                break;
+        }
     }
 }

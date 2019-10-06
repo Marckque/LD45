@@ -49,7 +49,7 @@ public class SectionSpeech : CustomUpdateUser
         }
         else
         {
-            if (Input.GetKeyDown(KeyCode.Space))
+            if (Input.GetKeyDown(KeyCode.Space) && !isOpponentSpeech)
             {
                 SwitchToNextSpeechSlide();
             }
@@ -98,8 +98,6 @@ public class SectionSpeech : CustomUpdateUser
             OnSpeechEnded.Invoke();
         }
 
-        ToggleSectionSpeechTo(false);
-
         if (!isOpponentSpeech)
         {
             opponentSpeech.ToggleSectionSpeechTo(true);
@@ -108,5 +106,7 @@ public class SectionSpeech : CustomUpdateUser
         {
             cinematic.Play();
         }
+
+        ToggleSectionSpeechTo(false);
     }
 }
